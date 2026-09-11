@@ -11,7 +11,19 @@
  *  signaln -- signal a semaphore n times
  *------------------------------------------------------------------------
  */
+LOCAL SYSCALL signaln_impl(int sem, int count);
+
 SYSCALL signaln(int sem, int count)
+{
+	SYSCALL	rv;
+
+	systrace_enter(SYS_SIGNALN);
+	rv = signaln_impl(sem, count);
+	systrace_exit(SYS_SIGNALN);
+	return rv;
+}
+
+LOCAL SYSCALL signaln_impl(int sem, int count)
 {
 	STATWORD ps;    
 	struct	sentry	*sptr;

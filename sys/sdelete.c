@@ -11,7 +11,19 @@
  * sdelete  --  delete a semaphore by releasing its table entry
  *------------------------------------------------------------------------
  */
+LOCAL SYSCALL sdelete_impl(int sem);
+
 SYSCALL sdelete(int sem)
+{
+	SYSCALL	rv;
+
+	systrace_enter(SYS_SDELETE);
+	rv = sdelete_impl(sem);
+	systrace_exit(SYS_SDELETE);
+	return rv;
+}
+
+LOCAL SYSCALL sdelete_impl(int sem)
 {
 	STATWORD ps;    
 	int	pid;

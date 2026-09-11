@@ -47,6 +47,11 @@ SYSCALL create(procaddr,ssize,priority,name,nargs,args)
 	numproc++;
 	pptr = &proctab[pid];
 
+	/* this slot may have been left mid-syscall by a process that
+	 * killed itself, so drop any leftover tracing state
+	 */
+	systrace_newproc(pid);
+
 	pptr->fildes[0] = 0;	/* stdin set to console */
 	pptr->fildes[1] = 0;	/* stdout set to console */
 	pptr->fildes[2] = 0;	/* stderr set to console */

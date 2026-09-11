@@ -13,7 +13,19 @@ LOCAL int newsem();
  * screate  --  create and initialize a semaphore, returning its id
  *------------------------------------------------------------------------
  */
+LOCAL SYSCALL screate_impl(int count);
+
 SYSCALL screate(int count)
+{
+	SYSCALL	rv;
+
+	systrace_enter(SYS_SCREATE);
+	rv = screate_impl(count);
+	systrace_exit(SYS_SCREATE);
+	return rv;
+}
+
+LOCAL SYSCALL screate_impl(int count)
 {
 	STATWORD ps;    
 	int	sem;

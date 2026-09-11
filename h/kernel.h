@@ -173,4 +173,7 @@ DEVCALL write(int descrp, void *buf, int count);
 /*Customized function to shutdown QEUM*/
 int shutdown();
 
+/* System call tracing hooks, used by every traced system call */
+#include <systrace.h>
+
 #endif

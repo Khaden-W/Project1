@@ -11,7 +11,19 @@
  * sleep1000 --  delay the caller for a time specified in 1/100 of seconds
  *------------------------------------------------------------------------
  */
+LOCAL SYSCALL sleep1000_impl(int n);
+
 SYSCALL sleep1000(int n)
+{
+	SYSCALL	rv;
+
+	systrace_enter(SYS_SLEEP1000);
+	rv = sleep1000_impl(n);
+	systrace_exit(SYS_SLEEP1000);
+	return rv;
+}
+
+LOCAL SYSCALL sleep1000_impl(int n)
 {
 	STATWORD ps;    
 

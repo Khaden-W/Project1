@@ -22,7 +22,19 @@ static inline unsigned long read_ebp(void) {
  * stacktrace - print a stack backtrace for a process
  *------------------------------------------------------------------------
  */
+LOCAL SYSCALL stacktrace_impl(int pid);
+
 SYSCALL stacktrace(int pid)
+{
+	SYSCALL	rv;
+
+	systrace_enter(SYS_STACKTRACE);
+	rv = stacktrace_impl(pid);
+	systrace_exit(SYS_STACKTRACE);
+	return rv;
+}
+
+LOCAL SYSCALL stacktrace_impl(int pid)
 {
 	struct pentry	*proc = &proctab[pid];
 	unsigned long	*sp, *fp;

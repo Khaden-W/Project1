@@ -11,7 +11,19 @@
  * wait  --  make current process wait on a semaphore
  *------------------------------------------------------------------------
  */
+LOCAL SYSCALL wait_impl(int sem);
+
 SYSCALL	wait(int sem)
+{
+	SYSCALL	rv;
+
+	systrace_enter(SYS_WAIT);
+	rv = wait_impl(sem);
+	systrace_exit(SYS_WAIT);
+	return rv;
+}
+
+LOCAL SYSCALL wait_impl(int sem)
 {
 	STATWORD ps;    
 	struct	sentry	*sptr;

@@ -9,7 +9,19 @@
  *  freemem  --  free a memory block, returning it to memlist
  *------------------------------------------------------------------------
  */
+LOCAL SYSCALL freemem_impl(struct mblock *block, unsigned size);
+
 SYSCALL	freemem(struct mblock *block, unsigned size)
+{
+	SYSCALL	rv;
+
+	systrace_enter(SYS_FREEMEM);
+	rv = freemem_impl(block, size);
+	systrace_exit(SYS_FREEMEM);
+	return rv;
+}
+
+LOCAL SYSCALL freemem_impl(struct mblock *block, unsigned size)
 {
 	STATWORD ps;    
 	struct	mblock	*p, *q;

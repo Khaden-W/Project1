@@ -11,7 +11,19 @@
  * unsleep  --  remove  process from the sleep queue prematurely
  *------------------------------------------------------------------------
  */
+LOCAL SYSCALL unsleep_impl(int pid);
+
 SYSCALL	unsleep(int pid)
+{
+	SYSCALL	rv;
+
+	systrace_enter(SYS_UNSLEEP);
+	rv = unsleep_impl(pid);
+	systrace_exit(SYS_UNSLEEP);
+	return rv;
+}
+
+LOCAL SYSCALL unsleep_impl(int pid)
 {
 	STATWORD ps;    
 	struct	pentry	*pptr;

@@ -11,7 +11,19 @@
  * sleep  --  delay the calling process n seconds
  *------------------------------------------------------------------------
  */
+LOCAL SYSCALL sleep_impl(int n);
+
 SYSCALL	sleep(int n)
+{
+	SYSCALL	rv;
+
+	systrace_enter(SYS_SLEEP);
+	rv = sleep_impl(n);
+	systrace_exit(SYS_SLEEP);
+	return rv;
+}
+
+LOCAL SYSCALL sleep_impl(int n)
 {
 	STATWORD ps;    
 	if (n<0 || clkruns==0)

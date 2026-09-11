@@ -11,7 +11,19 @@
  * sleep10  --  delay the caller for a time specified in tenths of seconds
  *------------------------------------------------------------------------
  */
+LOCAL SYSCALL sleep10_impl(int n);
+
 SYSCALL	sleep10(int n)
+{
+	SYSCALL	rv;
+
+	systrace_enter(SYS_SLEEP10);
+	rv = sleep10_impl(n);
+	systrace_exit(SYS_SLEEP10);
+	return rv;
+}
+
+LOCAL SYSCALL sleep10_impl(int n)
 {
 	STATWORD ps;    
 	if (n < 0  || clkruns==0)

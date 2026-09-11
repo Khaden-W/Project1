@@ -10,7 +10,19 @@
  *  suspend  --  suspend a process, placing it in hibernation
  *------------------------------------------------------------------------
  */
+LOCAL SYSCALL suspend_impl(int pid);
+
 SYSCALL	suspend(int pid)
+{
+	SYSCALL	rv;
+
+	systrace_enter(SYS_SUSPEND);
+	rv = suspend_impl(pid);
+	systrace_exit(SYS_SUSPEND);
+	return rv;
+}
+
+LOCAL SYSCALL suspend_impl(int pid)
 {
 	STATWORD ps;    
 	struct	pentry	*pptr;		/* pointer to proc. tab. entry	*/

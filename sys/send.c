@@ -9,7 +9,19 @@
  *  send  --  send a message to another process
  *------------------------------------------------------------------------
  */
+LOCAL SYSCALL send_impl(int pid, WORD msg);
+
 SYSCALL	send(int pid, WORD msg)
+{
+	SYSCALL	rv;
+
+	systrace_enter(SYS_SEND);
+	rv = send_impl(pid, msg);
+	systrace_exit(SYS_SEND);
+	return rv;
+}
+
+LOCAL SYSCALL send_impl(int pid, WORD msg)
 {
 	STATWORD ps;    
 	struct	pentry	*pptr;

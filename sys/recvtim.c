@@ -11,7 +11,19 @@
  *  recvtim  -  wait to receive a message or timeout and return result
  *------------------------------------------------------------------------
  */
+LOCAL SYSCALL recvtim_impl(int maxwait);
+
 SYSCALL	recvtim(int maxwait)
+{
+	SYSCALL	rv;
+
+	systrace_enter(SYS_RECVTIM);
+	rv = recvtim_impl(maxwait);
+	systrace_exit(SYS_RECVTIM);
+	return rv;
+}
+
+LOCAL SYSCALL recvtim_impl(int maxwait)
 {
 	STATWORD ps;    
 	struct	pentry	*pptr;

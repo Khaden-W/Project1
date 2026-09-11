@@ -13,7 +13,19 @@
  * kill  --  kill a process and remove it from the system
  *------------------------------------------------------------------------
  */
+LOCAL SYSCALL kill_impl(int pid);
+
 SYSCALL kill(int pid)
+{
+	SYSCALL	rv;
+
+	systrace_enter(SYS_KILL);
+	rv = kill_impl(pid);
+	systrace_exit(SYS_KILL);
+	return rv;
+}
+
+LOCAL SYSCALL kill_impl(int pid)
 {
 	STATWORD ps;    
 	struct	pentry	*pptr;		/* points to proc. table for pid*/

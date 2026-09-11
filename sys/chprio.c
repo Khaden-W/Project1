@@ -10,7 +10,19 @@
  * chprio  --  change the scheduling priority of a process
  *------------------------------------------------------------------------
  */
+LOCAL SYSCALL chprio_impl(int pid, int newprio);
+
 SYSCALL chprio(int pid, int newprio)
+{
+	SYSCALL	rv;
+
+	systrace_enter(SYS_CHPRIO);
+	rv = chprio_impl(pid, newprio);
+	systrace_exit(SYS_CHPRIO);
+	return rv;
+}
+
+LOCAL SYSCALL chprio_impl(int pid, int newprio)
 {
 	STATWORD ps;    
 	struct	pentry	*pptr;
